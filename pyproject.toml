@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cpl"
+version = "0.0.1"
+authors = [
+  { name="Ping Luo", email="pingluo@yale.edu" },
+  { name="John Lafferty", email="john.lafferty@yale.edu" },
+  { name="Awni Altabaa", email="awni.altabaa@yale.edu" },
+]
+description = "A checkpointing library for Python programs"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/YaleWTI-CNMI/checkpointing"
+Issues = "https://github.com/YaleWTI-CNMI/checkpointing/issues"
