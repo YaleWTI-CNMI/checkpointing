@@ -1,0 +1,12 @@
+email_server: 
+email_address: 
+email_types:
+  signal_caught: True
+  user_handle_done: True
+
+logfile: cpl.log
+loglevel: INFO
+
+delay: 0   # in minutes
+
+checkpoint_fn: model_checkpoint.pt

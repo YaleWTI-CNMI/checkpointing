@@ -1,0 +1,12 @@
+email_server: mail.yale.edu
+email_address: ping.luo@yale.edu
+email_types:
+  signal_caught: True
+  user_handle_done: True
+
+logfile: cpl.log
+loglevel: INFO
+
+delay: 50   # in minutes
+
+checkpoint_fn: model_checkpoint.pt
