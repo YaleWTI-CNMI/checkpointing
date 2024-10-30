@@ -1,0 +1,10 @@
+#!/bin/bash
+#SBATCH -p gpu_test -q qos_test
+#SBATCH --time=1:00:00
+#SBATCH --gres=gpu:a40:1
+#SBATCH -n 1 --ntasks-per-node=1 
+#SBATCH --reservation=workshop
+
+module load miniconda
+conda activate torch_2.4
+srun python ex4.py 

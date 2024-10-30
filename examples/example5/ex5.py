@@ -7,6 +7,17 @@ from pathlib import Path
 
 from cpl import cpl
 
+def my_checkpoint(kwargs):
+    file_path = kwargs['filepath']
+    torch.save({
+    'epoch': step_counter,
+    'model_state_dict':model.state_dict(),
+    'optimizer_state_dict':optimizer.state_dict(),
+    'loss':loss}, file_path)
+    # wandb.finish()
+    # etc...
+
+
 # Define the linear regression model
 class LinearRegressionModel(nn.Module):
     def __init__(self):
@@ -38,7 +49,7 @@ data_gen = data_loader(batch_size)
 mycpl = cpl.CPL()   
 
 # load the checkpoint file if it exists
-file_path = Path(mycpl.get_checkpoint_fn())
+file_path = Path('model_checkpoint.pt')
 if file_path.exists():
     checkpoint = torch.load(file_path, weights_only=True)
     model.load_state_dict(checkpoint['model_state_dict'])
@@ -67,20 +78,6 @@ for x, y in data_loader(batch_size):
     if step_counter % 1000 == 0:
         print(f"Step: {step_counter}; Loss: {loss.item():,.4f}")
 
-    if cpl.check():  
-        print()
-        print('='*100)
-        print('detected preemption flag inside training loop')
-        print('exiting gracefully (saving model checkpoint, etc.) ...')
-        torch.save({
-            'epoch': step_counter,
-            'model_state_dict':model.state_dict(),
-            'optimizer_state_dict':optimizer.state_dict(),
-            'loss':loss}, 'model_checkpoint.pt')
-        # wandb.finish()
-        # etc...
-        print('exiting now')
-        print('='*100)
-        break
+    mycpl.check(checkpoint_handler=my_checkpoint, back=False, filepath=file_path)
 
 print('Done')

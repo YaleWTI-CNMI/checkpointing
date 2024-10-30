@@ -20,14 +20,14 @@ class CPL:
     """
     def __init__(self, sig=SIGTERM):
         self._sig = sig
-        self._checkpoint_fn = None
+        self._checkpoint_fn = "checkpoint.ckp"
         self._email_server = None
         self._email_address = None
         self._delay = 0
         self._preempted = False
         self._emailed = False
         self._email_signal_caught = False
-        self._email_user_handle_done = False
+        self._email_checkpoint_handler_done = False
         self._log_enabled = False
 
         _cfg_fn = 'cpl.yml'
@@ -49,15 +49,12 @@ class CPL:
                 self._email_address = _config["email_address"]
             if _config["email_types"]:
                 self._email_signal_caught = _config["email_types"]["signal_caught"]
-                self._email_user_handle_done = _config["email_types"]["user_handle_done"]
+                self._email_checkpoint_handler_done = _config["email_types"]["checkpoint_handler_done"]
 
             if _config["checkpoint_fn"]:
                 self._checkpoint_fn = _config["checkpoint_fn"]
 
-            signal.signal(self._sig, self._signal_handler)
-        else:
-            print("Error: cannot find the configuration file cpl.yml.")
-            sys.exit(1)
+        signal.signal(self._sig, self._signal_handler)
             
     def _signal_handler(self, sig, frame):
         self._preempted = True
@@ -84,11 +81,11 @@ class CPL:
 
     """
     delay: postpone 'delay' minutes to return a true value of self._preempted to the caller. 
-    handler: user defined checkpointing and cleaning function
-    back: after the user handle is done, if 'back' is False, then stay in 'check.'
+    checkpoint_cleanup_handler: a handler for a user defined checkpointing and cleaning callback function.
+    back: after the user handler is done, if 'back' is False, then stay in 'check.'
           If back is True, go back to the caller function. 'back' must be False to have a job requeued.
     """
-    def check(self, handler=_cpl_handler, back=True, **kwargs):
+    def check(self, checkpoint_handler=_cpl_handler, back=True, **kwargs):
         if self._preempted == True:
             if self._email_address != None and not self._emailed and self._email_signal_caught: 
                 # when the signal is caught, email the user immediately
@@ -113,23 +110,23 @@ class CPL:
 
             if self._log_enabled:
                 if jobid:
-                    logging.info(f"Before calling the handler in job {jobid}.")
+                    logging.info(f"Before calling the checkpoint_handler in job {jobid}.")
                 else:
-                    logging.info(f"Before calling the handler.")
-            handler(kwargs)
+                    logging.info(f"Before calling the checkpoint_handler.")
+            checkpoint_handler(kwargs)
             if self._log_enabled:
                 if jobid:
-                    logging.info(f"After calling the handler in job {jobid}.")
+                    logging.info(f"After calling the checkpoint_handler in job {jobid}.")
                 else:
-                    logging.info(f"After calling the handler.")
-            if self._email_address != None and self._email_user_handle_done:
+                    logging.info(f"After calling the checkpoint_handler.")
+            if self._email_address != None and self._email_checkpoint_handler_done:
                 jobid = self._get_jobid()
                 if jobid:
-                    _subject = f"User handle done in job {jobid}"
-                    _message = f"User handle is done in job {jobid}."
+                    _subject = f"Checkpoint handler done"
+                    _message = f"Checkpoint handler is done in job {jobid}."
                 else:
-                    _subject = f"User handle done"
-                    _message = f"User handle is done."
+                    _subject = f"Checkpoint handler done"
+                    _message = f"Checkpoint handler is done."
                 self._email(self._email_server, self._email_address, _subject, _message)
 
             if back == False:

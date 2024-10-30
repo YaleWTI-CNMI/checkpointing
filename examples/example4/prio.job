@@ -1,0 +1,9 @@
+#!/bin/bash
+#SBATCH -p gpu_test -q qos_test2
+#SBATCH --gres=gpu:a40:4
+#SBATCH -n 1 --ntasks-per-node=1 
+#SBATCH --reservation=workshop
+
+date
+echo "preempt a job"
+sleep 60

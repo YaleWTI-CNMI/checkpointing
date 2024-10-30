@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH -p gpu_test -q qos_test
+#SBATCH --time=1:00:00
+#SBATCH --gres=gpu:a40:1
+#SBATCH -n 1 --ntasks-per-node=1 
+#SBATCH --requeue
+
+module load miniconda
+conda activate torch_2.4
+[ "x${SLURM_RESTART_COUNT}" == "x" ] && SLURM_RESTART_COUNT=0
+srun python simple.py > simple.out.${SLURM_JOB_ID}.${SLURM_RESTART_COUNT}
