@@ -29,6 +29,7 @@ class CPL:
         self._email_signal_caught = False
         self._email_checkpoint_handler_done = False
         self._log_enabled = False
+        self._jobid = self._get_jobid()
 
         _cfg_fn = 'cpl.yml'
         file_path = Path(_cfg_fn)
@@ -91,10 +92,9 @@ class CPL:
         if self._preempted == True:
             if self._email_address != None and not self._emailed and self._email_signal_caught: 
                 # when the signal is caught, email the user immediately
-                jobid = self._get_jobid()
-                if jobid:
-                    _subject = f"Signal caught in job {jobid}"
-                    _message = f"Signal {self._sig} is caught in job {jobid}."
+                if self._jobid:
+                    _subject = f"Signal caught in job {self._jobid}"
+                    _message = f"Signal {self._sig} is caught in job {self._jobid}."
                 else:
                     _subject = f"Signal caught"
                     _message = f"Signal {self._sig} is caught."
@@ -102,8 +102,8 @@ class CPL:
                 self._emailed = True
 
                 if self._log_enabled:
-                    if jobid:
-                        logging.info(f" Signal {self._sig} is caught in job {jobid}. Notification is sent to {self._email_address}")
+                    if self._jobid:
+                        logging.info(f" Signal {self._sig} is caught in job {self._jobid}. Notification is sent to {self._email_address}")
                     else:
                         logging.info(f" Signal {self._sig} is caught. Notification is sent to {self._email_address}")
 
@@ -111,21 +111,20 @@ class CPL:
                 return False
 
             if self._log_enabled:
-                if jobid:
-                    logging.info(f" Before calling the checkpoint handler in job {jobid}.")
+                if self._jobid:
+                    logging.info(f" Before calling the checkpoint handler in job {self._jobid}.")
                 else:
                     logging.info(f" Before calling the checkpoint handler.")
             checkpoint_handler(kwargs)
             if self._log_enabled:
-                if jobid:
-                    logging.info(f" After calling the checkpoint handler in job {jobid}.")
+                if self._jobid:
+                    logging.info(f" After calling the checkpoint handler in job {self._jobid}.")
                 else:
                     logging.info(f" After calling the checkpoint handler.")
             if self._email_address != None and self._email_checkpoint_handler_done:
-                jobid = self._get_jobid()
-                if jobid:
-                    _subject = f"Checkpoint handler done in job {jobid}"
-                    _message = f"Checkpoint handler is done in job {jobid}."
+                if self._jobid:
+                    _subject = f"Checkpoint handler done in job {self._jobid}"
+                    _message = f"Checkpoint handler is done in job {self._jobid}."
                 else:
                     _subject = f"Checkpoint handler done"
                     _message = f"Checkpoint handler is done."
