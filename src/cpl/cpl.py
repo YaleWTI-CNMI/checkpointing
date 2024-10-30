@@ -101,24 +101,24 @@ class CPL:
 
                 if self._log_enabled:
                     if jobid:
-                        logging.info(f"Signal {self._sig} is caught in job {jobid}. Notification is sent to {self._email_address}")
+                        logging.info(f" Signal {self._sig} is caught in job {jobid}. Notification is sent to {self._email_address}")
                     else:
-                        logging.info(f"Signal {self._sig} is caught. Notification is sent to {self._email_address}")
+                        logging.info(f" Signal {self._sig} is caught. Notification is sent to {self._email_address}")
 
             if datetime.now() < self._time_of_preemption + timedelta(minutes=self._delay):
                 return False
 
             if self._log_enabled:
                 if jobid:
-                    logging.info(f"Before calling the checkpoint handler in job {jobid}.")
+                    logging.info(f" Before calling the checkpoint handler in job {jobid}.")
                 else:
-                    logging.info(f"Before calling the checkpoint handler.")
+                    logging.info(f" Before calling the checkpoint handler.")
             checkpoint_handler(kwargs)
             if self._log_enabled:
                 if jobid:
-                    logging.info(f"After calling the checkpoint handler in job {jobid}.")
+                    logging.info(f" After calling the checkpoint handler in job {jobid}.")
                 else:
-                    logging.info(f"After calling the checkpoint handler.")
+                    logging.info(f" After calling the checkpoint handler.")
             if self._email_address != None and self._email_checkpoint_handler_done:
                 jobid = self._get_jobid()
                 if jobid:

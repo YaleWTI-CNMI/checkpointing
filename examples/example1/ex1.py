@@ -67,7 +67,7 @@ for x, y in data_loader(batch_size):
     if step_counter % 1000 == 0:
         print(f"Step: {step_counter}; Loss: {loss.item():,.4f}")
 
-    if cpl.check():  
+    if mycpl.check():  
         print()
         print('='*100)
         print('detected preemption flag inside training loop')
