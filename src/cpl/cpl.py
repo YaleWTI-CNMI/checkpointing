@@ -51,6 +51,8 @@ class CPL:
                 self._email_signal_caught = _config["email_types"]["signal_caught"]
                 self._email_checkpoint_handler_done = _config["email_types"]["checkpoint_handler_done"]
 
+            if _config["delay"]:
+                self._delay = _config["delay"]
             if _config["checkpoint_fn"]:
                 self._checkpoint_fn = _config["checkpoint_fn"]
 
