@@ -6,6 +6,7 @@
 #SBATCH --reservation=workshop
 #SBATCH --requeue
 
+export PYTHONUNBUFFERED=TRUE
 module load miniconda
 conda activate torch_2.4
 [ "x${SLURM_RESTART_COUNT}" == "x" ] && SLURM_RESTART_COUNT=0

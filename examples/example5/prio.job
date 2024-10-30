@@ -6,4 +6,4 @@
 
 date
 echo "preempt a job"
-sleep 60
+sleep 30

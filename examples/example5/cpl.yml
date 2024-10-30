@@ -7,6 +7,6 @@ email_types:
 logfile: cpl.log
 loglevel: INFO
 
-delay: 3   # in minutes
+delay: 1   # in minutes
 
 checkpoint_fn: model_checkpoint.pt

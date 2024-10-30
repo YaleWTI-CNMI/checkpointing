@@ -1,6 +1,0 @@
-
-CondaError: Run 'conda init' before 'conda deactivate'
-
-/home/pl543/workspace/conda/torch_2.4/lib/python3.10/site-packages/torch/_inductor/compile_fx.py:150: UserWarning: TensorFloat32 tensor cores for float32 matrix multiplication available but not enabled. Consider setting `torch.set_float32_matmul_precision('high')` for better performance.
-  warnings.warn(
-slurmstepd: error: *** STEP 63835.0 ON r4518u09n01 CANCELLED AT 2024-10-30T11:35:17 ***
