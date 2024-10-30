@@ -1,6 +1,0 @@
-2024-10-30 10:48:13,435 INFO: Signal 15 is caught in job 63824. Notification is sent to ping.luo@yale.edu
-2024-10-30 10:48:13,435 INFO: Before calling the checkpoint handler in job 63824.
-2024-10-30 10:48:13,437 INFO: After calling the checkpoint handler in job 63824.
-2024-10-30 11:01:58,366 INFO: Signal 15 is caught in job 63824. Notification is sent to ping.luo@yale.edu
-2024-10-30 11:01:58,367 INFO: Before calling the checkpoint handler in job 63824.
-2024-10-30 11:01:58,368 INFO: After calling the checkpoint handler in job 63824.
