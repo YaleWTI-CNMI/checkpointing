@@ -64,7 +64,7 @@ loglevel: INFO
 delay: 50   # in minutes
 checkpoint_fn: model_checkpoint.pt
 ```
-### Use Cases
+### Examples
 [A basic use case](examples/example1)
 
 [Email notification](examples/example2)
