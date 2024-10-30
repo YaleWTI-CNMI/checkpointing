@@ -49,7 +49,7 @@ data_gen = data_loader(batch_size)
 mycpl = cpl.CPL()   
 
 # load the checkpoint file if it exists
-file_path = Path('model_checkpoint.pt')
+file_path = Path(mycpl.get_checkpoint_fn())
 if file_path.exists():
     checkpoint = torch.load(file_path, weights_only=True)
     model.load_state_dict(checkpoint['model_state_dict'])

@@ -14,9 +14,6 @@ class CPL:
 
     """
     sig: an integer, specifies the signal number the cpl instance will catch.
-    email: a valid email address where notifications will be sent when a signal is caught.
-    logfile
-    loglevel
     """
     def __init__(self, sig=SIGTERM):
         self._sig = sig
@@ -37,24 +34,27 @@ class CPL:
             with open(_cfg_fn) as _cfg_f:
                 _config = yaml.safe_load(_cfg_f)
             
-            if _config["logfile"]:
+            keys = _config.keys()
+            if "logfile" in keys:
                 self._log_enabled = True
                 logging.basicConfig(filename=_config["logfile"], 
                                     encoding='utf-8', 
                                     level=_config["loglevel"], 
                                     format='%(asctime)s %(levelname)s:%(message)s')
 
-            if _config["email_server"]:
+            if "email_server" in keys:
                 self._email_server = _config["email_server"]
-            if _config["email_address"]:
+            if "email_address" in keys:
                 self._email_address = _config["email_address"]
-            if _config["email_types"]:
-                self._email_signal_caught = _config["email_types"]["signal_caught"]
-                self._email_checkpoint_handler_done = _config["email_types"]["checkpoint_handler_done"]
+            if "email_types" in keys:
+                if "signal_caught" in _config["email_types"].keys():
+                    self._email_signal_caught = _config["email_types"]["signal_caught"]
+                if "checkpoint_handler_done" in _config["email_types"].keys():
+                    self._email_checkpoint_handler_done = _config["email_types"]["checkpoint_handler_done"]
 
-            if _config["delay"]:
+            if "delay" in keys:
                 self._delay = _config["delay"]
-            if _config["checkpoint_fn"]:
+            if "checkpoint_fn" in keys:
                 self._checkpoint_fn = _config["checkpoint_fn"]
 
         signal.signal(self._sig, self._signal_handler)
